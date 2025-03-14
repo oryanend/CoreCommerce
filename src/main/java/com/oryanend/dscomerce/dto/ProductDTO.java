@@ -1,11 +1,6 @@
 package com.oryanend.dscomerce.dto;
 
-import com.oryanend.dscomerce.entities.Category;
-import com.oryanend.dscomerce.entities.OrderItem;
-import jakarta.persistence.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.oryanend.dscomerce.entities.Product;
 
 public class ProductDTO {
 
@@ -24,6 +19,14 @@ public class ProductDTO {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public ProductDTO(Product product) {
+        id = product.getId();
+        name = product.getName();
+        description = product.getDescription();
+        price = product.getPrice();
+        imgUrl = product.getImgUrl();
     }
 
     public Long getId() {
