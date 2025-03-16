@@ -1,13 +1,19 @@
 package com.oryanend.dscomerce.services;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.oryanend.dscomerce.dto.ProductDTO;
 import com.oryanend.dscomerce.entities.Product;
 import com.oryanend.dscomerce.repositories.ProductRepository;
+import com.oryanend.dscomerce.services.execeptions.DatabaseException;
 import com.oryanend.dscomerce.services.execeptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -57,8 +63,17 @@ public class ProductService {
         entity.setImgUrl(dto.getImgUrl());
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id){
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Recurso não encontrado!");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Falha de integridade referencial.");
+        }
         repository.deleteById(id);
     }
 
