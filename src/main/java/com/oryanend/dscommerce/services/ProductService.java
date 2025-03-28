@@ -1,7 +1,9 @@
 package com.oryanend.dscommerce.services;
 
+import com.oryanend.dscommerce.dto.CategoryDTO;
 import com.oryanend.dscommerce.dto.ProductDTO;
 import com.oryanend.dscommerce.dto.ProductMinDTO;
+import com.oryanend.dscommerce.entities.Category;
 import com.oryanend.dscommerce.entities.Product;
 import com.oryanend.dscommerce.repositories.ProductRepository;
 import com.oryanend.dscommerce.services.execeptions.DatabaseException;
@@ -56,6 +58,12 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+        entity.getCategories().clear();
+        for (CategoryDTO catDTO : dto.getCategories()){
+            Category cat = new Category();
+            cat.setId(catDTO.getId());
+            entity.getCategories().add(cat);
+        }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
