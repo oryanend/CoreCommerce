@@ -1,6 +1,7 @@
 package com.oryanend.dscommerce.services;
 
 import com.oryanend.dscommerce.dto.ProductDTO;
+import com.oryanend.dscommerce.dto.ProductMinDTO;
 import com.oryanend.dscommerce.entities.Product;
 import com.oryanend.dscommerce.repositories.ProductRepository;
 import com.oryanend.dscommerce.services.execeptions.DatabaseException;
@@ -27,9 +28,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable){
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable){
         Page<Product> products = repository.searchByName(name,pageable);
-        return products.map(ProductDTO::new);
+        return products.map(ProductMinDTO::new);
     }
 
     @Transactional
