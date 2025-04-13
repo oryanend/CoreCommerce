@@ -65,10 +65,33 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO){
+    @Operation(summary = "Cadastrar novo produto",
+            description = "Cria um novo produto no sistema. Informe os dados do produto no schema JSON.")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Produto criado com sucesso",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados inválidos fornecidos",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Não autorizado - Apenas usuários admin podem executar essa ação",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(responseCode = "403", description = "Acesso negado - Credenciais válidas mas sem permissão suficiente",
+                    content = @Content(schema = @Schema(hidden = true)))
+    })
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO productDTO) {
         productDTO = productService.insert(productDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productDTO.getId()).toUri();
-
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(productDTO.getId())
+                .toUri();
         return ResponseEntity.created(uri).body(productDTO);
     }
 
