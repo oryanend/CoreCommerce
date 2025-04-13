@@ -1,13 +1,27 @@
 package com.oryanend.dscommerce.dto;
 
 import com.oryanend.dscommerce.entities.OrderItem;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class OrderItemDTO {
-    
+
+    @Schema(description = "ID do produto",
+            example = "1",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Long productId;
-    private String name;
-    private Double price;
+
+    @Schema(description = "Quantidade do produto",
+            example = "2",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer quantity;
+
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private String name;
+
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    private Double price;
+
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private String imgUrl;
 
     public OrderItemDTO(Long productId, String name, Double price, Integer quantity, String imgUrl) {
