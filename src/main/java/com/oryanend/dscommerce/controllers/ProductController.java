@@ -65,7 +65,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "422", description = "Dados inválidos fornecidos", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = "Apenas usuários admin podem executar essa ação", content = @Content(schema = @Schema(hidden = true)))
+            @ApiResponse(responseCode = "401", description = "Não autorizado - Apenas usuários admin podem executar essa ação", content = @Content(schema = @Schema(hidden = true)))
     })
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO){
         productDTO = productService.update(productDTO, id);
@@ -74,6 +74,19 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
+    @Operation(summary = "Excluir produto",
+            description = "Remove um produto existente do sistema. Requer permissões de administrador.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso",
+                    content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "Falha de integridade referencial.", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Não autorizado - Apenas usuários admin podem executar essa ação",
+                    content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Acesso negado - Credenciais válidas mas sem permissão suficiente",
+                    content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado",
+                    content = @Content(schema = @Schema(hidden = true)))
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id){
         productService.delete(id);
         return ResponseEntity.noContent().build();
