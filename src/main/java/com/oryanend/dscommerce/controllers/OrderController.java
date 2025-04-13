@@ -31,6 +31,15 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @GetMapping(value = "/{id}")
+    @Operation(summary = "Buscar pedido por ID",
+            description = """
+           Retorna os detalhes completos de um pedido específico.
+           Requer um ID válido de produto cadastrado no sistema.
+           """)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(schema = @Schema(hidden = true)))})
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id){
         OrderDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
