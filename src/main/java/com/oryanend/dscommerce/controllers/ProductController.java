@@ -10,9 +10,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +46,21 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductMinDTO>> findAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable){
-        Page<ProductMinDTO> dto = productService.findAll(name,pageable);
-        return ResponseEntity.ok().body(dto);
+    @Operation(summary = "Listar todos os produtos paginados",
+            description = "Retorna uma lista paginada de produtos com possibilidade de filtro por nome")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Parâmetros de paginação inválidos", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public ResponseEntity<Page<ProductMinDTO>> findAll(
+            @Parameter(description = "Filtro por nome do produto")
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @ParameterObject
+            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.ASC)
+            Pageable pageable) {
+
+        Page<ProductMinDTO> dto = productService.findAll(name, pageable);
+        return ResponseEntity.ok(dto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
