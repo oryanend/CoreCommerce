@@ -3,6 +3,9 @@ package com.oryanend.dscommerce.controllers;
 import com.oryanend.dscommerce.dto.ProductDTO;
 import com.oryanend.dscommerce.dto.ProductMinDTO;
 import com.oryanend.dscommerce.services.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,15 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping(value = "/{id}")
+    @Operation(summary = "Buscar produto por ID",
+            description = """
+           Retorna os detalhes completos de um produto específico.
+           Requer um ID válido de produto cadastrado no sistema.
+           """)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")})
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
         ProductDTO dto = productService.findById(id);
         return ResponseEntity.ok().body(dto);
