@@ -4,6 +4,9 @@ import com.oryanend.dscommerce.dto.ProductDTO;
 import com.oryanend.dscommerce.dto.ProductMinDTO;
 import com.oryanend.dscommerce.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -31,9 +34,9 @@ public class ProductController {
            Requer um ID válido de produto cadastrado no sistema.
            """)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")})
+            @ApiResponse(responseCode = "200", description = "Produto encontrado com sucesso", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(schema = @Schema(hidden = true)))})
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
         ProductDTO dto = productService.findById(id);
         return ResponseEntity.ok().body(dto);
@@ -56,7 +59,15 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long id){
+    @Operation(summary = "Atualizar produto",
+            description = "Atualiza os dados de um produto existente. Informe o Id do produto e defina a suas alterações no schema JSON.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "422", description = "Dados inválidos fornecidos", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Apenas usuários admin podem executar essa ação", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO){
         productDTO = productService.update(productDTO, id);
         return ResponseEntity.ok().body(productDTO);
     }
