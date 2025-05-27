@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.oryanend</groupId>
-	<artifactId>dscommerce</artifactId>
+	<artifactId>corecommerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dscommerce</name>
+	<name>corecommerce</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
