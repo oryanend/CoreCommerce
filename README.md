@@ -145,16 +145,17 @@ Segue abaixo as instruções para executar o projeto:
 git clone git@github.com:oryanend/CoreCommerce.git
 ```
 
+
 ### Passo 2: Importar o Projeto
-- Abra o Intellij IDEA ou sua IDE de preferência
+- Abra o IntelliJ IDEA ou sua IDE de preferência
 - Selecione "Open" no menu e escolha o diretório do projeto clonado
 - Aguarde até que o IntelliJ configure o projeto
 
 ### Passo 3: Configuração
-- Verifique se todas as dependências foram carregadas corretamente pelo Maven 
+- Verifique se todas as dependências foram carregadas corretamente pelo Maven
 
 ### Passo 4: Execução
-- Localize a classe principal da aplicação `DscommerceApplication`(localizado em src/main/java/com/devsuperior/dscommerce) e execute-a
+- Localize a classe principal da aplicação `CoreCommerceApplication` (localizada em `src/main/java/com/seu/pacote/CoreCommerceApplication.java`) e execute-a
 - Ou, se preferir utilizar o Maven, você pode executar o projeto a partir da linha de comando:
 ```
 mvn spring-boot:run
