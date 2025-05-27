@@ -165,6 +165,14 @@ mvn spring-boot:run
 - Uma vez que a aplicação esteja em execução, você pode interagir com ela consumindo os endpoints da API. Para isso, recomenda-se o uso de ferramentas como o Postman, que permite fazer requisições HTTP de forma fácil e eficiente
 - Se preferir, também é possível acessá-la através do navegador web, digitando o endereço <b> `http://localhost:8080` na barra de endereços
 
+
+### ✅ Acessando o Swagger
+Você também pode acessar a aplicação em execução pela documentação da API, que estará disponível no navegador através do Swagger UI:
+```
+http://localhost:8080/swagger-ui/index.html#/
+```
+
+
 # 🛠️ Testando a API com o Postman
 Para facilitar o teste dos endpoints da API, disponibilizei uma coleção e um ambiente (environment) no Postman contendo todas as requisições disponíveis. Siga os passos abaixo para importar a coleção e começar a testar:
 1. Baixe e Instale o Postman
